@@ -40,3 +40,9 @@ h1 {
   height: auto;
   object-fit: cover;
 }
+/* Text Content */
+.episode-card h3 {
+  font-size: 1.2rem;
+  margin: 15px;
+  color: #007acc;
+}
