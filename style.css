@@ -52,3 +52,12 @@ h1 {
   font-size: 0.95rem;
   line-height: 1.4;
 }
+/* Link to TVMaze */
+.episode-card a {
+  text-decoration: none;
+  color: #007acc;
+  font-weight: bold;
+  margin: 0 15px 15px;
+  align-self: flex-start;
+}
+
