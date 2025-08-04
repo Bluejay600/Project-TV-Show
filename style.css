@@ -46,3 +46,9 @@ h1 {
   margin: 15px;
   color: #007acc;
 }
+/* Summary text */
+.episode-card .summary {
+  padding: 0 15px 15px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
