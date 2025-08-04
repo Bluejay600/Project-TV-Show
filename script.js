@@ -21,11 +21,16 @@ function makePageForEpisodes(episodeList) {
 
     const summary = document.createElement("div");
     summary.innerHTML = episode.summary;
-    
+
  const link = document.createElement("a");
     link.href = episode.url;
     link.textContent = "View on TVMaze";
     link.target = "_blank";
+
+    
+    episodeCard.append(title, image, summary, link);
+    rootElem.appendChild(episodeCard);
+  });
 }
 
 window.onload = setup;
