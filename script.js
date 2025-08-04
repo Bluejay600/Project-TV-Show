@@ -32,5 +32,10 @@ function makePageForEpisodes(episodeList) {
     rootElem.appendChild(episodeCard);
   });
 }
+function formatEpisodeCode(season, number) {
+  const seasonStr = season.toString().padStart(2, '0');
+  const numberStr = number.toString().padStart(2, '0');
+  return `S${seasonStr}E${numberStr}`;
+}
 
 window.onload = setup;
