@@ -49,4 +49,7 @@ searchInput.addEventListener("input", function () {
       episode.summary.toLowerCase().includes(searchTerm)
     );
   });
+   displayEpisodes(filteredEpisodes);
+  searchCount.textContent = `Showing ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
+});
 window.onload = setup;
