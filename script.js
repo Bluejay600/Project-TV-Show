@@ -41,4 +41,12 @@ function formatEpisodeCode(season, number) {
 const searchInput = document.getElementById("search-input");
 const searchCount = document.getElementById("search-count");
 
+searchInput.addEventListener("input", function () {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filteredEpisodes = allEpisodes.filter((episode) => {
+    return (
+      episode.name.toLowerCase().includes(searchTerm) ||
+      episode.summary.toLowerCase().includes(searchTerm)
+    );
+  });
 window.onload = setup;
