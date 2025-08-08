@@ -60,6 +60,7 @@ searchInput.addEventListener("input", function () {
   searchCount.textContent = `Showing ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
 });
 
+// === Episode Selector
 const episodeSelect = document.getElementById("episode-select");
 
 function populateEpisodeSelect(episodes) {
