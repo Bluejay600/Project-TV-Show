@@ -2,7 +2,7 @@
 let allEpisodes = []; // Global so it can be used across functions.
 
 function setup() {
-  const allEpisodes = getAllEpisodes();
+  allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
   populateEpisodeSelect(allEpisodes);
 }
@@ -15,7 +15,7 @@ function displayEpisodes(episodes) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = ""; // Clear previous content
 
-  episodeList.forEach((episode) => {
+  episodes.forEach((episode) => {
     const episodeCard = document.createElement("div");
     episodeCard.className = "episode-card";
     
@@ -28,7 +28,7 @@ function displayEpisodes(episodes) {
     const summary = document.createElement("div");
     summary.innerHTML = episode.summary;
 
- const link = document.createElement("a");
+    const link = document.createElement("a");
     link.href = episode.url;
     link.textContent = "View on TVMaze";
     link.target = "_blank";
