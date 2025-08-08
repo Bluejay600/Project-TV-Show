@@ -1,4 +1,5 @@
 //You can edit ALL of the code here
+let allEpisodes = []; // Global so it can be used across functions.
 
 function setup() {
   const allEpisodes = getAllEpisodes();
