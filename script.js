@@ -91,4 +91,16 @@ function populateEpisodeSelect(episodes) {
     episodeSelect.appendChild(option);
   });
 }
+episodeSelect.addEventListener("change", function () {
+  const selectedValue = episodeSelect.value;
+  if (selectedValue === "all") {
+    displayEpisodes(allEpisodes);
+  } else {
+    const selectedEpisode = allEpisodes.find(
+      (episode) => episode.id === parseInt(selectedValue)
+    );
+    displayEpisodes([selectedEpisode]);
+  }
+});
+populateEpisodeSelect(allEpisodes);
 window.onload = setup;
