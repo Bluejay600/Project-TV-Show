@@ -79,4 +79,16 @@ function displayEpisodes(episodes) {
     rootElem.appendChild(episodeCard);
   });
 }
+const episodeSelect = document.getElementById("episode-select");
+
+function populateEpisodeSelect(episodes) {
+  episodes.forEach((episode) => {
+    const option = document.createElement("option");
+    option.value = episode.id;
+    option.textContent = `S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")} - ${episode.name}`;
+    episodeSelect.appendChild(option);
+  });
+}
 window.onload = setup;
