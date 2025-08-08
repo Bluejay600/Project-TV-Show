@@ -4,6 +4,7 @@ let allEpisodes = []; // Global so it can be used across functions.
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
+  populateEpisodeSelect(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
