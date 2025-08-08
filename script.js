@@ -44,6 +44,7 @@ function formatEpisodeCode(season, number) {
   return `S${seasonStr}E${numberStr}`;
 }
 
+// === Live Search ===
 const searchInput = document.getElementById("search-input");
 const searchCount = document.getElementById("search-count");
 
