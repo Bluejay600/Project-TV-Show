@@ -64,6 +64,7 @@ searchInput.addEventListener("input", function () {
 const episodeSelect = document.getElementById("episode-select");
 
 function populateEpisodeSelect(episodes) {
+  episodeSelect.innerHTML = ""; // Clear previous options
   episodes.forEach((episode) => {
     const option = document.createElement("option");
     option.value = episode.id;
