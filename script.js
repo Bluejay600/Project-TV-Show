@@ -18,6 +18,8 @@ function setup() {
       allEpisodes = data;
       hideMessage();
       displayEpisodes(allEpisodes);
+      searchCount.textContent = `Showing ${allEpisodes.length} / ${allEpisodes.length} episodes`;
+      // Populate the episode selector with all episodes
       populateEpisodeSelect(allEpisodes);
     })
     .catch((error) => {
