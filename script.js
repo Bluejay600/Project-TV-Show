@@ -37,10 +37,10 @@ function displayEpisodes(episodes) {
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
 
     const image = document.createElement("img");
-    image.src = episode.image.medium;
+    image.src = episode.image.medium || "placeholder.jpg"; // optional fallback image
 
     const summary = document.createElement("div");
-    summary.innerHTML = episode.summary;
+    summary.innerHTML = episode.summary|| "No summary available.";
 
     const link = document.createElement("a");
     link.href = episode.url;
