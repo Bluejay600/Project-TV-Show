@@ -1,14 +1,24 @@
 //You can edit ALL of the code here
 let allEpisodes = []; // Global so it can be used across functions.
 
-function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  populateEpisodeSelect(allEpisodes);
-}
-
-function makePageForEpisodes(episodeList) {
-  displayEpisodes(episodeList);
+function setup() {  showLoadingMessage();
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      allEpisodes = data;
+      hideMessage();
+      displayEpisodes(allEpisodes);
+      populateEpisodeSelect(allEpisodes);
+    })
+    .catch((error) => {
+      showErrorMessage("Failed to load episodes. Please try again later.");
+      console.error(error);
+    });
 }
 
 function displayEpisodes(episodes) {
