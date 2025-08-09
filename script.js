@@ -73,7 +73,7 @@ searchInput.addEventListener("input", function () {
 
 // === Episode Selector
 function populateEpisodeSelect(episodes) {
-  episodeSelect.innerHTML = ""; // Clear previous options
+  episodeSelect.innerHTML = '<option value="all">Show all episodes</option>';
   episodes.forEach((episode) => {
     const option = document.createElement("option");
     option.value = episode.id;
