@@ -1,7 +1,12 @@
 //You can edit ALL of the code here
-let allEpisodes = []; // Global so it can be used across functions.
+let allEpisodes = []; // Global so it can be used across functions to store API data.
+const rootElem = document.getElementById("root");
+const searchInput = document.getElementById("search-input");
+const searchCount = document.getElementById("search-count");
+const episodeSelect = document.getElementById("episode-select");
 
-function setup() {  showLoadingMessage();
+function setup() {  
+  showLoadingMessage();
   fetch("https://api.tvmaze.com/shows/82/episodes")
     .then((response) => {
       if (!response.ok) {
@@ -22,7 +27,6 @@ function setup() {  showLoadingMessage();
 }
 
 function displayEpisodes(episodes) {
-  const rootElem = document.getElementById("root");
   rootElem.innerHTML = ""; // Clear previous content
 
   episodes.forEach((episode) => {
@@ -55,9 +59,6 @@ function formatEpisodeCode(season, number) {
 }
 
 // === Live Search ===
-const searchInput = document.getElementById("search-input");
-const searchCount = document.getElementById("search-count");
-
 searchInput.addEventListener("input", function () {
   const searchTerm = searchInput.value.toLowerCase();
   const filteredEpisodes = allEpisodes.filter((episode) => {
@@ -71,8 +72,6 @@ searchInput.addEventListener("input", function () {
 });
 
 // === Episode Selector
-const episodeSelect = document.getElementById("episode-select");
-
 function populateEpisodeSelect(episodes) {
   episodeSelect.innerHTML = ""; // Clear previous options
   episodes.forEach((episode) => {
