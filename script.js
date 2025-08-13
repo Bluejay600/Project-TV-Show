@@ -2,11 +2,22 @@
 let allEpisodes = [];
 let currentSearchTerm = "";
 
+async function setup() {
+  showLoadingMessage();
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    allEpisodes = await response.json();
 
-function setup() {
-  allEpisodes = getAllEpisodes();
-  addSearchAndFiltersInputs();
-  renderFilteredEpisodes();
+    hideLoadingMessage();
+    addSearchAndFiltersInputs();
+    renderFilteredEpisodes();
+  } catch (error) {
+    showErrorMessage("Failed to load episodes. Please try again later.");
+    console.error(error);
+  }
 }
 
 function makePageForEpisodes(episodeList) {
