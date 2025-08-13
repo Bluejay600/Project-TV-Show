@@ -115,17 +115,6 @@ function addSearchAndFiltersInputs() {
     makePageForEpisodes(selectedEpisode ? [selectedEpisode] : []);
   });
 }
-  
-function renderFilteredEpisodes() {
-    const filteredEpisodes = allEpisodes.filter(episode => {
-    const summaryText = episode.summary ? episode.summary.toLowerCase() : "";
-    return (
-      episode.name.toLowerCase().includes(currentSearchTerm) ||
-      summaryText.includes(currentSearchTerm)
-    );
-  });
-  makePageForEpisodes(filteredEpisodes);
-}
 
 function formatEpisodeCode(season, number) {
   const seasonStr = season.toString().padStart(2, '0');
