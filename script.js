@@ -127,6 +127,14 @@ function showLoadingMessage() {
   rootElem.innerHTML = "<p>Loading episodes...</p>";
 }
 
+function hideLoadingMessage() {
+  document.getElementById("root").innerHTML = "";
+}
+
+function showErrorMessage(message) {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = `<p class="error">${message}</p>`;
+}
 window.onload = setup;
 
 
