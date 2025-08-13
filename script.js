@@ -1,6 +1,9 @@
-//You can edit ALL of the code here
-let allEpisodes = [];
-let currentSearchTerm = "";
+let allEpisodes = []; // Global so it can be used across functions to store API data.
+//global variable declairation to store all episodes data 
+const rootElem = document.getElementById("root");
+const searchInput = document.getElementById("search-input");
+const searchCount = document.getElementById("search-count");
+const episodeSelect = document.getElementById("episode-select");
 
 async function setup() {
   showLoadingMessage();
@@ -21,7 +24,6 @@ async function setup() {
 }
 
 function makePageForEpisodes(episodeList) {
- const rootElem = document.getElementById("root");
  rootElem.innerHTML = "";
 
 let countDisplay = document.getElementById("episode-count");
@@ -71,7 +73,6 @@ function addSearchAndFiltersInputs() {
   controlsContainer.id = "controls-container";
 
   //  Search input
-  const searchInput = document.createElement("input");
   searchInput.type = "text";
   searchInput.placeholder = "Search...";
   searchInput.id = "search-input";
