@@ -133,7 +133,7 @@ function hideLoadingMessage() {
 
 function showErrorMessage(message) {
   const rootElem = document.getElementById("root");
-  rootElem.innerHTML = `<p class="error">${message}</p>`;
+  rootElem.innerHTML = `<p  class="error" style="color:red;">${message}</p>`;
 }
 window.onload = setup;
 
