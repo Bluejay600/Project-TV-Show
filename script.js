@@ -122,6 +122,11 @@ function formatEpisodeCode(season, number) {
   return `S${seasonStr}E${numberStr}`;
 }
 
+function showLoadingMessage() {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "<p>Loading episodes...</p>";
+}
+
 window.onload = setup;
 
 
