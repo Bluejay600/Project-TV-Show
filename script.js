@@ -29,6 +29,7 @@ async function setup() {
 
 function makePageForEpisodes(episodeList) {
  rootElem.innerHTML = "";
+
 // Episode count display
 let countDisplay = document.getElementById("episode-count");
 if (!countDisplay) {
@@ -38,6 +39,7 @@ if (!countDisplay) {
 }
 countDisplay.textContent = `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
 
+// No results message
   if (episodeList.length === 0) {
     const message = document.createElement("div");
     message.className = "no-results";
@@ -45,7 +47,7 @@ countDisplay.textContent = `Displaying ${episodeList.length} / ${allEpisodes.len
     rootElem.appendChild(message);
     return;
   }
-
+ // Create episode cards
   episodeList.forEach((episode) => {
     const episodeCard = document.createElement("div");
     episodeCard.className = "episode-card";
@@ -55,7 +57,7 @@ countDisplay.textContent = `Displaying ${episodeList.length} / ${allEpisodes.len
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
 
     const image = document.createElement("img");
-    image.src = episode.image?.medium || "";
+    image.src = episode.image?.medium || "placeholder.jpg"; // placeholder if no image
     image.alt = episode.name;
 
     const summary = document.createElement("div");
@@ -80,6 +82,7 @@ function addSearchAndFiltersInputs() {
   searchInput.type = "text";
   searchInput.placeholder = "Search...";
   searchInput.id = "search-input";
+  searchInput.setAttribute("aria-label", "Search episodes");
   controlsContainer.appendChild(searchInput);
 
     // Episode selector
