@@ -116,7 +116,7 @@ function addSearchAndFiltersInputs() {
     const selectedId = episodeSelect.value;
     searchInput.value = "";  
     currentSearchTerm = "";
-    
+
     if (!selectedId) {
       renderFilteredEpisodes();
       return;
@@ -125,6 +125,16 @@ function addSearchAndFiltersInputs() {
     const selectedEpisode = allEpisodes.find(ep => ep.id.toString() === selectedId);
     makePageForEpisodes(selectedEpisode ? [selectedEpisode] : []);
   });
+}
+function renderFilteredEpisodes() {
+  const filteredEpisodes = allEpisodes.filter(episode => {
+    const summaryText = episode.summary ? episode.summary.toLowerCase() : "";
+    return (
+      episode.name.toLowerCase().includes(currentSearchTerm) ||
+      summaryText.includes(currentSearchTerm)
+    );
+  });
+  makePageForEpisodes(filteredEpisodes);
 }
 
 function formatEpisodeCode(season, number) {
