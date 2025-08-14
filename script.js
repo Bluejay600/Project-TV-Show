@@ -143,6 +143,7 @@ function formatEpisodeCode(season, number) {
   return `S${seasonStr}E${numberStr}`;
 }
 
+// Loading & error messages
 function showLoadingMessage() {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = "<p>Loading episodes...</p>";
@@ -156,6 +157,5 @@ function showErrorMessage(message) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = `<p  class="error" style="color:red;">${message}</p>`;
 }
-window.onload = setup;
 
 
