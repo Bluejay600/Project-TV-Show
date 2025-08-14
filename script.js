@@ -88,6 +88,8 @@ function addSearchAndFiltersInputs() {
     // Episode selector
   const episodeSelect = document.createElement("select");
   episodeSelect.id = "episode-selector";
+  episodeSelect.setAttribute("aria-label", "Select an episode");
+
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.textContent = "Select Episode";
@@ -99,9 +101,8 @@ function addSearchAndFiltersInputs() {
     option.textContent = `${formatEpisodeCode(ep.season, ep.number)} - ${ep.name}`;
     episodeSelect.appendChild(option);
   });
+
   controlsContainer.appendChild(episodeSelect);
-
-
   document.body.insertBefore(controlsContainer, document.body.firstChild);
 
   //  Event listeners
@@ -109,11 +110,13 @@ function addSearchAndFiltersInputs() {
     currentSearchTerm = searchInput.value.toLowerCase();
     episodeSelect.value ="";
     renderFilteredEpisodes();
-
   });
+
   episodeSelect.addEventListener("change", () => {
     const selectedId = episodeSelect.value;
-    searchInput.value = "";  currentSearchTerm = "";
+    searchInput.value = "";  
+    currentSearchTerm = "";
+    
     if (!selectedId) {
       renderFilteredEpisodes();
       return;
