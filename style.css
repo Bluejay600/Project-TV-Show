@@ -3,8 +3,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #a5a4a4;
-  color: #0e0d0d;
+  background-color: #2f2e33;
+  color: #e4eef7;
 }
 h1 {
   text-align: center;
@@ -51,6 +51,7 @@ h1 {
   padding: 20px;
   max-width: 1200px;
   margin: auto;
+  color: #111;
 }
 /* Episode card */
 .episode-card {
@@ -85,7 +86,7 @@ h1 {
 .episode-card h3 {
   font-size: 1.2rem;
   margin: 15px;
-  color: #007acc;
+  color: #4d3e0275;
 }
 .no-results {
   text-align: center;
@@ -103,7 +104,7 @@ h1 {
 /* Link to TVMaze */
 .episode-card a {
   text-decoration: none;
-  color: #007acc;
+  color: #3b3703;
   font-weight: bold;
   margin: 0 15px 15px;
   align-self: flex-start;
