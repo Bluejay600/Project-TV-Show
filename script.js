@@ -1,10 +1,5 @@
 let allEpisodes = []; // Global so it can be used across functions to store API data.
 let currentSearchTerm = "";
-//global variable declairation to store all episodes data 
-const rootElem = document.getElementById("root");
-const searchInput = document.getElementById("search-input");
-const searchCount = document.getElementById("search-count");
-const episodeSelect = document.getElementById("episode-select");
 
 // Load episodes when the page loads
 window.onload = setup;
@@ -28,6 +23,7 @@ async function setup() {
 }
 
 function makePageForEpisodes(episodeList) {
+const rootElem = document.getElementById("root");
  rootElem.innerHTML = "";
 
 // Episode count display
@@ -79,6 +75,7 @@ function addSearchAndFiltersInputs() {
   controlsContainer.id = "controls-container";
 
   //  Search input
+  const searchInput = document.createElement("input");
   searchInput.type = "text";
   searchInput.placeholder = "Search...";
   searchInput.id = "search-input";
