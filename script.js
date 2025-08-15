@@ -12,6 +12,12 @@ async function setup() {
     const shows = await fetchShows();
     const sortedShows = sortShowsAlphabetically(shows);
     populateShowSelect(sortedShows);
+     if (sortedShows.length === 0) {
+      showErrorMessage("No shows available.");
+      return;
+    }
+
+
     const firstShowId = sortedShows[0].id;
 await loadEpisodesForShow(firstShowId);
 
@@ -41,7 +47,34 @@ async function loadEpisodesForShow(showId) {
     allEpisodes = episodes;
   }
   renderFilteredEpisodes();
+
 }
+  function resetSearchAndEpisodeSelector() {
+  currentSearchTerm = "";
+  const searchInput = document.getElementById("search-input");
+  if (searchInput) searchInput.value = "";
+
+  populateEpisodeSelect(allEpisodes);
+  renderFilteredEpisodes();
+}
+  function populateEpisodeSelect(episodes) {
+    const episodeSelect = document.getElementById("episode-selector");
+   if (!episodeSelect) return;
+    episodeSelect.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Find episodes";
+  episodeSelect.appendChild(defaultOption);
+
+    episodes.forEach(ep => {
+      const option = document.createElement("option");
+      option.value = ep.id;
+      option.textContent = `${formatEpisodeCode(ep.season, ep.number)} - ${ep.name}`;
+      episodeSelect.appendChild(option);
+    });
+  }
+
 document.getElementById("show-select").addEventListener("change", async (e) => {
   const selectedShowId = Number(e.target.value);
   await loadEpisodesForShow(selectedShowId);
@@ -86,10 +119,12 @@ countDisplay.textContent = `Displaying ${episodeList.length} / ${allEpisodes.len
     return;
   }
  // Create episode cards
+ const fragment = document.createDocumentFragment();
   episodeList.forEach((episode) => {
-    const episodeCard = document.createElement("div");
-    episodeCard.className = "episode-card";
-    episodeCard.id = `episode-${episode.id}`;
+    const episodeCard = createEpisodeCard(episode);
+  fragment.appendChild(episodeCard);
+});
+rootElem.appendChild(fragment);
 
     const title = document.createElement("h3");
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
@@ -125,14 +160,6 @@ function addSearchAndFiltersInputs() {
   controlsContainer.appendChild(searchInput);
 
     // Episode selector
-  const episodeSelect = document.createElement("select");
-  episodeSelect.id = "episode-selector";
-  episodeSelect.setAttribute("aria-label", "Select an episode");
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Find episodes";
-  episodeSelect.appendChild(defaultOption);
 
   allEpisodes.forEach(ep => {
     const option = document.createElement("option");
@@ -145,11 +172,11 @@ function addSearchAndFiltersInputs() {
   document.body.insertBefore(controlsContainer, document.body.firstChild);
 
   //  Event listeners
-  searchInput.addEventListener("input", () => {
+  searchInput.addEventListener("input", debounce (() => {
     currentSearchTerm = searchInput.value.toLowerCase();
     episodeSelect.value ="";
     renderFilteredEpisodes();
-  });
+  }, 300));
 
   episodeSelect.addEventListener("change", () => {
     const selectedId = episodeSelect.value;
