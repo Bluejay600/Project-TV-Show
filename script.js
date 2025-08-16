@@ -1,10 +1,34 @@
-let allEpisodes = []; // Global so it can be used across functions to store API data.
-let currentSearchTerm = "";
-let episodeSelect;
-let searchInput;
-let showCache = new Map();
-let episodeCache = new Map();
+// ===== Global State =====
+let currentView = "shows"; // "shows" | "episodes"
+let allShows = [];
+let allEpisodes = [];
+let selectedShowId = null;
 
+// ===== Create UI Elements =====
+const rootElem = document.getElementById("root");
+
+const controlsBar = document.createElement("div");
+controlsBar.id = "controls-bar";
+
+const searchInput = document.createElement("input");
+searchInput.type = "text";
+searchInput.placeholder = "Search shows...";
+searchInput.id = "search-input";
+
+const searchCount = document.createElement("span");
+searchCount.id = "search-count";
+
+const episodeSelect = document.createElement("select");
+episodeSelect.id = "episode-select";
+episodeSelect.style.display = "none";
+
+const backBtn = document.createElement("button");
+backBtn.id = "back-to-shows";
+backBtn.textContent = "← Back to Shows";
+backBtn.style.display = "none";
+
+controlsBar.append(backBtn, searchInput, episodeSelect, searchCount);
+document.body.insertBefore(controlsBar, rootElem);
 // Load episodes when the page loads
 window.onload = setup;
 
