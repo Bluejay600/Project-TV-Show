@@ -213,7 +213,55 @@ function goToShow(showId) {
       console.error(err);
     });
 }
+// ===== Episodes View =====
+async function loadEpisodesForShow(showId) {
+  const episodes = await fetchEpisodesOnce(showId);
+  allEpisodes = episodes;
+  hideMessage();
+  populateEpisodeSelect(allEpisodes);
 
+  const term = searchInput.value.toLowerCase();
+  const filtered = filterEpisodes(allEpisodes, term);
+  displayEpisodes(filtered);
+  updateSearchCount(filtered.length, allEpisodes.length);
+}
+
+function displayEpisodes(episodes) {
+  rootElem.innerHTML = "";
+  if (!episodes || episodes.length === 0) {
+    rootElem.innerHTML = "<p>No episodes match your search.</p>";
+    return;
+  }
+  episodes.forEach((episode) => {
+    const card = document.createElement("div");
+    card.className = "episode-card";
+
+    const title = document.createElement("h3");
+    title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
+    card.appendChild(title);
+
+    if (episode.image?.medium) {
+      const img = document.createElement("img");
+      img.src = episode.image.medium;
+      img.alt = episode.name;
+      card.appendChild(img);
+    }
+
+    const summary = document.createElement("div");
+    summary.innerHTML = episode.summary || "No summary available.";
+    card.appendChild(summary);
+
+    if (episode.url) {
+      const link = document.createElement("a");
+      link.href = episode.url;
+      link.textContent = "View on TVMaze";
+      link.target = "_blank";
+      card.appendChild(link);
+    }
+
+    rootElem.appendChild(card);
+  });
+}
 function addSearchAndFiltersInputs() {
   const controlsContainer = document.createElement("div");
   controlsContainer.id = "controls-container";
