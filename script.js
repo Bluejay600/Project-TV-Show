@@ -302,43 +302,13 @@ function updateSearchCount(showing, total) {
 function formatEpisodeCode(season, number) {
   return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
-// Filter for just that episode
-
-function renderFilteredEpisodes() {
-  const filteredEpisodes = allEpisodes.filter(episode => {
-    const summaryText = episode.summary ? episode.summary.toLowerCase() : "";
-    return (
-      episode.name.toLowerCase().includes(currentSearchTerm) ||
-      summaryText.includes(currentSearchTerm)
-    );
-  });
-  makePageForEpisodes(filteredEpisodes);
+// ===== Messages =====
+function showLoadingMessage(text = "Loading…") {
+  rootElem.innerHTML = `<p>${text}</p>`;
 }
-
-function formatEpisodeCode(season, number) {
-  const seasonStr = season.toString().padStart(2, '0');
-  const numberStr = number.toString().padStart(2, '0');
-  return `S${seasonStr}E${numberStr}`;
+function showErrorMessage(msg) {
+  rootElem.innerHTML = `<p style="color:red;">${msg}</p>`;
 }
-
-// Loading & error messages
-function showLoadingMessage() {
-  const rootElem = document.getElementById("root");
-  rootElem.innerHTML = "<p>Loading episodes...</p>";
+function hideMessage() {
+  rootElem.innerHTML = "";
 }
-
-function hideLoadingMessage() {
-  document.getElementById("root").innerHTML = "";
-}
-
-function showErrorMessage(message) {
-  let rootElem = document.getElementById("root");
-  if (!rootElem) {
-    rootElem = document.createElement("div");
-    rootElem.id = "root";
-    document.body.appendChild(rootElem);
-  }
-  rootElem.innerHTML = `<p class="error" style="color:red;">${message}</p>`;
-}
-
-
