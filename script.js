@@ -119,21 +119,16 @@ function updateSearchUI() {
     searchCount.textContent = `Showing ${allEpisodes.length} / ${allEpisodes.length} episodes`;
   }
 }
- function populateShowSelect(shows) {
-  if (!showSelect) return;
-  showSelect.innerHTML = "";
 
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Select a show";
-  showSelect.appendChild(defaultOption);
-
-  shows.forEach(show => {
-    const option = document.createElement("option");
-    option.value = show.id;
-    option.textContent = show.name;
-    showSelect.appendChild(option);
-  });
+// ===== Fetch Helpers =====
+function fetchShowsOnce() {
+  if (showsListPromise) return showsListPromise;
+  showsListPromise = fetch("https://api.tvmaze.com/shows")
+    .then(res => {
+      if (!res.ok) throw new Error(`Shows HTTP ${res.status}`);
+      return res.json();
+    });
+  return showsListPromise;
 }
 function populateEpisodeSelect(episodes) {
   if (!episodeSelect) return;
