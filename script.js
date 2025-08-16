@@ -158,7 +158,6 @@ function fetchEpisodesOnce(showId) {
   return p;
 }
 
-
 // ===== Shows Listing =====
 function renderShows(shows) {
   rootElem.innerHTML = "";
@@ -202,30 +201,17 @@ function renderShows(shows) {
   rootElem.appendChild(grid);
 }
 
-function createEpisodeCard(episode) {
-  const episodeCard = document.createElement("div");
-  episodeCard.className = "episode-card";
-  episodeCard.id = `episode-${episode.id}`;
+function goToShow(showId) {
+  selectedShowId = Number(showId);
+  setView("episodes");
+  searchInput.value = "";
+  showLoadingMessage("Loading episodes…");
 
-  const title = document.createElement("h3");
-  title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
-
-  const image = document.createElement("img");
-  image.src = episode.image?.medium || "placeholder.jpg"; // placeholder if no image
-  image.alt = episode.name;
-
-  const summary = document.createElement("div");
-  summary.className = "summary";
-  summary.innerHTML = episode.summary || "No summary available.";
-
-
-  const link = document.createElement("a");
-  link.href = episode.url;
-  link.textContent = "View on TVMaze";
-  link.target = "_blank";
-
-  episodeCard.append(title, image, summary, link);
-  return episodeCard;
+  loadEpisodesForShow(selectedShowId)
+    .catch(err => {
+      showErrorMessage("Failed to load episodes for this show.");
+      console.error(err);
+    });
 }
 
 function addSearchAndFiltersInputs() {
