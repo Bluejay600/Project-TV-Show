@@ -83,39 +83,41 @@ function setup() {
     }
   });
 }
-async function fetchShows() {
-  const cached = sessionStorage.getItem("shows");
-  if (cached) {
-    const parsed = JSON.parse(cached);
-    parsed.forEach(show => showCache.set(show.id, show));
-    return parsed;
+// ===== View Management =====
+function setView(view) {
+  currentView = view;
+  if (view === "shows") {
+    backBtn.style.display = "none";
+    episodeSelect.style.display = "none";
+    searchInput.placeholder = "Search shows (name, genres, summary)…";
+    searchCount.textContent = "";
+  } else {
+    backBtn.style.display = "inline-block";
+    episodeSelect.style.display = "inline-block";
+    searchInput.placeholder = "Search episodes (name or summary)…";
   }
-    const response = await fetch(`https://api.tvmaze.com/shows`);
-    const shows = await response.json();
-    shows.forEach(show => showCache.set(show.id, show));
-  sessionStorage.setItem("shows", JSON.stringify(shows));
-  return shows;
 }
 
-async function loadEpisodesForShow(showId) {
-  if (episodeCache.has(showId)) {
-    allEpisodes = episodeCache.get(showId);
+function onSearchInput() {
+  const term = searchInput.value.toLowerCase();
+  if (currentView === "shows") {
+    const filtered = filterShows(allShows, term);
+    renderShows(filtered);
+    searchCount.textContent = `Showing ${filtered.length} / ${allShows.length} shows`;
   } else {
-    const cached = sessionStorage.getItem(`episodes_${showId}`);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      episodeCache.set(showId, parsed);
-      allEpisodes = parsed;
-    } else {
-      const response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`);
-      const episodes = await response.json();
-      episodeCache.set(showId, episodes);
-      sessionStorage.setItem(`episodes_${showId}`, JSON.stringify(episodes));
-      allEpisodes = episodes;
-    }
+    const filtered = filterEpisodes(allEpisodes, term);
+    displayEpisodes(filtered);
+    updateSearchCount(filtered.length, allEpisodes.length);
+    episodeSelect.value = "all";
   }
+}
 
-  renderFilteredEpisodes();
+function updateSearchUI() {
+  if (currentView === "shows") {
+    searchCount.textContent = `Showing ${allShows.length} / ${allShows.length} shows`;
+  } else {
+    searchCount.textContent = `Showing ${allEpisodes.length} / ${allEpisodes.length} episodes`;
+  }
 }
  function populateShowSelect(shows) {
   if (!showSelect) return;
