@@ -130,22 +130,32 @@ function fetchShowsOnce() {
     });
   return showsListPromise;
 }
-function populateEpisodeSelect(episodes) {
-  if (!episodeSelect) return;
-  episodeSelect.innerHTML = "";
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Find episodes";
-  episodeSelect.appendChild(defaultOption);
 
 
-  episodes.forEach(ep => {
-    const option = document.createElement("option");
-    option.value = ep.id;
-    option.textContent = `${formatEpisodeCode(ep.season, ep.number)} - ${ep.name}`;
-    episodeSelect.appendChild(option);
-  });
+function fetchEpisodesOnce(showId) {
+  if (episodesCache.has(showId)) {
+    return Promise.resolve(episodesCache.get(showId));
+  }
+  if (inFlightEpisodeFetch.has(showId)) {
+    return inFlightEpisodeFetch.get(showId);
+  }
+  const p = fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
+    .then(res => {
+      if (!res.ok) throw new Error(`Episodes HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(eps => {
+      episodesCache.set(showId, eps);
+      inFlightEpisodeFetch.delete(showId);
+      return eps;
+    })
+    .catch(err => {
+      inFlightEpisodeFetch.delete(showId);
+      throw err;
+    });
+
+  inFlightEpisodeFetch.set(showId, p);
+  return p;
 }
 
 function sortShowsAlphabetically(shows) {
