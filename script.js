@@ -294,12 +294,13 @@ function filterEpisodes(episodes, term) {
   );
 }
 
-function debounce(fn, delay) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
+// ===== UI Helpers =====
+function updateSearchCount(showing, total) {
+  searchCount.textContent = `Showing ${showing} / ${total} episodes`;
+}
+
+function formatEpisodeCode(season, number) {
+  return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
 // Filter for just that episode
 
