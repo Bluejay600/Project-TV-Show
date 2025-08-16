@@ -29,6 +29,14 @@ backBtn.style.display = "none";
 
 controlsBar.append(backBtn, searchInput, episodeSelect, searchCount);
 document.body.insertBefore(controlsBar, rootElem);
+
+// ===== Single-Fetch Caches =====
+let showsListPromise = null;
+const episodesCache = new Map();
+const inFlightEpisodeFetch = new Map();
+
+// ===== Boot =====
+window.onload = setup;
 // Load episodes when the page loads
 window.onload = setup;
 
