@@ -158,40 +158,48 @@ function fetchEpisodesOnce(showId) {
   return p;
 }
 
-function sortShowsAlphabetically(shows) {
-  return shows.sort((a, b) =>
-    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-  );
-}
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
+
+// ===== Shows Listing =====
+function renderShows(shows) {
   rootElem.innerHTML = "";
-
-  // Episode count display
-  let countDisplay = document.getElementById("episode-count");
-  if (!countDisplay) {
-    countDisplay = document.createElement("div");
-    countDisplay.id = "episode-count";
-    countDisplay.setAttribute("aria-live", "polite");
-    document.body.insertBefore(countDisplay, rootElem);
-  }
-  countDisplay.textContent = `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
-
-  // No results message
-  if (episodeList.length === 0) {
-    const message = document.createElement("div");
-    message.className = "no-results";
-    message.textContent = "Oops no match found!!!";
-    rootElem.appendChild(message);
+  if (!shows || shows.length === 0) {
+    rootElem.innerHTML = "<p>No shows match your search.</p>";
     return;
   }
-  // Create episode cards
-  const fragment = document.createDocumentFragment();
-  episodeList.forEach((episode) => {
-    const episodeCard = createEpisodeCard(episode);
-    fragment.appendChild(episodeCard);
+  const grid = document.createElement("div");
+  grid.className = "shows-grid";
+
+  shows.forEach(show => {
+    const card = document.createElement("article");
+    card.className = "show-card";
+
+    const title = document.createElement("h2");
+    title.textContent = show.name;
+    title.className = "show-title";
+    title.tabIndex = 0;
+    title.addEventListener("click", () => goToShow(show.id));
+
+    const img = document.createElement("img");
+    img.src = show.image?.medium || "";
+    img.alt = show.name || "Show image";
+
+    const summary = document.createElement("div");
+    summary.className = "show-summary";
+    summary.innerHTML = show.summary || "No summary available.";
+
+    const meta = document.createElement("p");
+    const genres = Array.isArray(show.genres) ? show.genres.join(", ") : "N/A";
+    const status = show.status || "N/A";
+    const rating = (show.rating && show.rating.average) ? show.rating.average : "N/A";
+    const runtime = show.runtime ?? "N/A";
+    meta.className = "show-meta";
+    meta.textContent = `Genres: ${genres} | Status: ${status} | Rating: ${rating} | Runtime: ${runtime} mins`;
+
+    card.append(title, img, summary, meta);
+    grid.appendChild(card);
   });
-  rootElem.appendChild(fragment);
+
+  rootElem.appendChild(grid);
 }
 
 function createEpisodeCard(episode) {
