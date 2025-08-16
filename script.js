@@ -35,35 +35,53 @@ let showsListPromise = null;
 const episodesCache = new Map();
 const inFlightEpisodeFetch = new Map();
 
-// ===== Boot =====
-window.onload = setup;
 // Load episodes when the page loads
 window.onload = setup;
 
-async function setup() {
-  showLoadingMessage();
-  try {
-    const shows = await fetchShows();
-    const sortedShows = sortShowsAlphabetically(shows);
+function setup() {
+  setView("shows");
+  showLoadingMessage("Loading shows…");
 
-    addSearchAndFiltersInputs();
-    populateShowSelect(sortedShows);
-    if (sortedShows.length === 0) {
-      showErrorMessage("No shows available.");
-      return;
+  fetchShowsOnce()
+    .then(shows => {
+      shows.sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: "accent" })
+      );
+      allShows = shows;
+      hideMessage();
+      renderShows(allShows);
+      updateSearchUI();
+    })
+    .catch(err => {
+      showErrorMessage("Failed to load shows. Please try again later.");
+      console.error(err);
+    });
+
+  backBtn.addEventListener("click", () => {
+    setView("shows");
+    episodeSelect.value = "all";
+    searchInput.value = "";
+    renderShows(allShows);
+    updateSearchUI();
+  });
+
+  searchInput.addEventListener("input", onSearchInput);
+
+  episodeSelect.addEventListener("change", () => {
+    if (currentView !== "episodes") return;
+    const selectedId = episodeSelect.value;
+    const term = searchInput.value.toLowerCase();
+    const base = filterEpisodes(allEpisodes, term);
+
+    if (selectedId === "all") {
+      displayEpisodes(base);
+      updateSearchCount(base.length, allEpisodes.length);
+    } else {
+      const selectedEpisode = base.find(ep => ep.id.toString() === selectedId);
+      displayEpisodes(selectedEpisode ? [selectedEpisode] : []);
+      updateSearchCount(selectedEpisode ? 1 : 0, allEpisodes.length);
     }
-    const firstShowId = sortedShows[0].id;
-    await loadEpisodesForShow(firstShowId);
-    populateEpisodeSelect(allEpisodes);
-    
-    
-    renderFilteredEpisodes();
-  } catch (error) {
-    showErrorMessage("Failed to load episodes. Please try again later.");
-    console.error(error);
-  } finally {
-    hideLoadingMessage();
-  }
+  });
 }
 async function fetchShows() {
   const cached = sessionStorage.getItem("shows");
